@@ -5,7 +5,6 @@ terraform {
     container_name       = "terraform"
     key                  = "terraform.tfstate"
     access_key           = "__storagekey__"
-    features {}
   }
 }
 
