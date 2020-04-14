@@ -10,6 +10,7 @@ terraform {
 
 provider "azurerm" {
   version = "=2.5.0"
+  client_secret="987c8e05-7a4c-4f5d-abd9-89ca0a13dc2b"
   features {}
 }
 
