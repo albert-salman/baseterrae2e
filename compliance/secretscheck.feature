@@ -1,6 +1,7 @@
 Feature: Azure Credentials should not be within the code
-    This feature will enforce to use Azure Credentials either via
-    environment variables or via metadata endpoint
+    As a security architect
+    I want to eliminate hardcoded credentials in terraform templates
+    In order to increase IaC security
 
     Scenario Outline: Azure Credentials should not be hardcoded
         Given I have azurerm provider configured
@@ -8,6 +9,8 @@ Feature: Azure Credentials should not be within the code
         Then its value must not match the "<regex>" regex
 
         Examples:
-            | key        | regex                                                      |
-            | client_secret | (?<![A-Z0-9])[A-Z0-9]{20}(?![A-Z0-9])                      |
-            | adminpassword | (?<![A-Za-z0-9\/+=])[A-Za-z0-9\/+=]{40}(?![A-Za-z0-9\/+=]) |  
+            | key             | regex                                                        |
+            | client_secret   | [a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12} |
+            | client_id       | [a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12} |
+            | subscription_id | [a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12} |
+            | tenant_id       | [a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12} |
