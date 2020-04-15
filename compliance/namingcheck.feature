@@ -10,7 +10,7 @@ Feature: Azure resources follow naming convention
 
         Examples:
             | resource_name                                | name_key | regex |
-            | azurerm_resource_group                       | name     | aRG.* |
+            | azurerm_resource_group                       | name     | RG-.* |
             | azurerm_virtual_network                      | name     | .*    |
             | azurerm_subnet                               | name     | .*    |
             | azurerm_public_ip                            | name     | .*    |
