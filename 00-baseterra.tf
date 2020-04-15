@@ -19,7 +19,7 @@ resource "azurerm_resource_group" "__resourcegroupname__" {
 
   tags = {
     environment = "__tagenvironment__"
-    environment = "__tagapplication__"
+    application = "__tagapplication__"
   }
 }
 
@@ -31,7 +31,7 @@ resource "azurerm_virtual_network" "__vnetname__" {
 
   tags = {
     environment = "__tagenvironment__"
-    environment = "__tagapplication__"
+    application = "__tagapplication__"
   }
 }
 
@@ -51,7 +51,7 @@ resource "azurerm_public_ip" "__bastionpublicipname__" {
 
   tags = {
     environment = "__tagenvironment__"
-    environment = "__tagapplication__"
+    application = "__tagapplication__"
   }
 }
 
@@ -68,7 +68,7 @@ resource "azurerm_bastion_host" "__bastionname__" {
 
   tags = {
     environment = "__tagenvironment__"
-    environment = "__tagapplication__"
+    application = "__tagapplication__"
   }
 }
 
@@ -88,7 +88,7 @@ resource "azurerm_public_ip" "__azfwpipname__" {
 
   tags = {
     environment = "__tagenvironment__"
-    environment = "__tagapplication__"
+    application = "__tagapplication__"
   }
 }
 
@@ -105,7 +105,7 @@ resource "azurerm_firewall" "__azfwname__" {
 
   tags = {
     environment = "__tagenvironment__"
-    environment = "__tagapplication__"
+    application = "__tagapplication__"
   }
 }
 
@@ -129,7 +129,7 @@ resource "azurerm_network_interface" "__vmname__-VMNIC1" {
 
   tags = {
     environment = "__tagenvironment__"
-    environment = "__tagapplication__"
+    application = "__tagapplication__"
   }
 }
 
@@ -158,7 +158,7 @@ resource "azurerm_windows_virtual_machine" "__vmname__" {
 
   tags = {
     environment = "__tagenvironment__"
-    environment = "__tagapplication__"
+    application = "__tagapplication__"
   }
 }
 
@@ -177,7 +177,7 @@ resource "azurerm_route_table" "__udrname__" {
 
   tags = {
     environment = "__tagenvironment__"
-    environment = "__tagapplication__"
+    application = "__tagapplication__"
   }
 }
 
