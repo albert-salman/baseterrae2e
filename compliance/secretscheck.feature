@@ -1,4 +1,4 @@
-Feature: Azure Credentials should not be within the code
+Feature: Azure credentials must not be within the code
     As a security architect
     I want to eliminate hardcoded credentials in terraform templates
     In order to increase IaC security
