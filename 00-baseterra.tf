@@ -16,6 +16,11 @@ provider "azurerm" {
 resource "azurerm_resource_group" "__resourcegroupname__" {
   name     = "__resourcegroupname__"
   location = "__resourcelocation__"
+
+  tags = {
+    environment = "__tagenvironment__"
+    environment = "__tagapplication__"
+  }
 }
 
 resource "azurerm_virtual_network" "__vnetname__" {
@@ -23,6 +28,11 @@ resource "azurerm_virtual_network" "__vnetname__" {
   address_space       = ["100.64.0.0/10"]
   location            = azurerm_resource_group.__resourcegroupname__.location
   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
+
+  tags = {
+    environment = "__tagenvironment__"
+    environment = "__tagapplication__"
+  }
 }
 
 resource "azurerm_subnet" "AzureBastionSubnet" {
@@ -30,6 +40,11 @@ resource "azurerm_subnet" "AzureBastionSubnet" {
   resource_group_name  = azurerm_resource_group.__resourcegroupname__.name
   virtual_network_name = azurerm_virtual_network.__vnetname__.name
   address_prefix       = "100.127.255.0/24"
+
+  tags = {
+    environment = "__tagenvironment__"
+    environment = "__tagapplication__"
+  }
 }
 
 resource "azurerm_public_ip" "__bastionpublicipname__" {
@@ -38,6 +53,11 @@ resource "azurerm_public_ip" "__bastionpublicipname__" {
   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
   allocation_method   = "Static"
   sku                 = "Standard"
+
+  tags = {
+    environment = "__tagenvironment__"
+    environment = "__tagapplication__"
+  }
 }
 
 resource "azurerm_bastion_host" "__bastionname__" {
@@ -50,6 +70,11 @@ resource "azurerm_bastion_host" "__bastionname__" {
     subnet_id            = azurerm_subnet.AzureBastionSubnet.id
     public_ip_address_id = azurerm_public_ip.__bastionpublicipname__.id
   }
+
+  tags = {
+    environment = "__tagenvironment__"
+    environment = "__tagapplication__"
+  }
 }
 
 resource "azurerm_subnet" "AzureFirewallSubnet" {
@@ -57,6 +82,11 @@ resource "azurerm_subnet" "AzureFirewallSubnet" {
   resource_group_name  = azurerm_resource_group.__resourcegroupname__.name
   virtual_network_name = azurerm_virtual_network.__vnetname__.name
   address_prefix       = "100.64.0.0/24"
+
+  tags = {
+    environment = "__tagenvironment__"
+    environment = "__tagapplication__"
+  }
 }
 
 resource "azurerm_public_ip" "__azfwpipname__" {
@@ -65,6 +95,11 @@ resource "azurerm_public_ip" "__azfwpipname__" {
   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
   allocation_method   = "Static"
   sku                 = "Standard"
+
+  tags = {
+    environment = "__tagenvironment__"
+    environment = "__tagapplication__"
+  }
 }
 
 resource "azurerm_firewall" "__azfwname__" {
@@ -77,6 +112,11 @@ resource "azurerm_firewall" "__azfwname__" {
     subnet_id            = azurerm_subnet.AzureFirewallSubnet.id
     public_ip_address_id = azurerm_public_ip.__azfwpipname__.id
   }
+
+  tags = {
+    environment = "__tagenvironment__"
+    environment = "__tagapplication__"
+  }
 }
 
 resource "azurerm_subnet" "__vmsubnetname__" {
@@ -84,6 +124,11 @@ resource "azurerm_subnet" "__vmsubnetname__" {
   resource_group_name  = azurerm_resource_group.__resourcegroupname__.name
   virtual_network_name = azurerm_virtual_network.__vnetname__.name
   address_prefix       = "100.64.1.0/24"
+
+  tags = {
+    environment = "__tagenvironment__"
+    environment = "__tagapplication__"
+  }
 }
 
 resource "azurerm_network_interface" "__vmname__-VMNIC1" {
@@ -95,6 +140,11 @@ resource "azurerm_network_interface" "__vmname__-VMNIC1" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.__vmsubnetname__.id
     private_ip_address_allocation = "Dynamic"
+  }
+
+  tags = {
+    environment = "__tagenvironment__"
+    environment = "__tagapplication__"
   }
 }
 
@@ -120,6 +170,11 @@ resource "azurerm_windows_virtual_machine" "__vmname__" {
     sku       = "2016-Datacenter"
     version   = "latest"
   }
+
+  tags = {
+    environment = "__tagenvironment__"
+    environment = "__tagapplication__"
+  }
 }
 
 resource "azurerm_route_table" "__udrname__" {
@@ -136,7 +191,8 @@ resource "azurerm_route_table" "__udrname__" {
   }
 
   tags = {
-    environment = "HUB"
+    environment = "__tagenvironment__"
+    environment = "__tagapplication__"
   }
 }
 
