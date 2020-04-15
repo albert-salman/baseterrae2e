@@ -40,11 +40,6 @@ resource "azurerm_subnet" "AzureBastionSubnet" {
   resource_group_name  = azurerm_resource_group.__resourcegroupname__.name
   virtual_network_name = azurerm_virtual_network.__vnetname__.name
   address_prefix       = "100.127.255.0/24"
-
-  tags = {
-    environment = "__tagenvironment__"
-    environment = "__tagapplication__"
-  }
 }
 
 resource "azurerm_public_ip" "__bastionpublicipname__" {
@@ -82,11 +77,6 @@ resource "azurerm_subnet" "AzureFirewallSubnet" {
   resource_group_name  = azurerm_resource_group.__resourcegroupname__.name
   virtual_network_name = azurerm_virtual_network.__vnetname__.name
   address_prefix       = "100.64.0.0/24"
-
-  tags = {
-    environment = "__tagenvironment__"
-    environment = "__tagapplication__"
-  }
 }
 
 resource "azurerm_public_ip" "__azfwpipname__" {
@@ -124,11 +114,6 @@ resource "azurerm_subnet" "__vmsubnetname__" {
   resource_group_name  = azurerm_resource_group.__resourcegroupname__.name
   virtual_network_name = azurerm_virtual_network.__vnetname__.name
   address_prefix       = "100.64.1.0/24"
-
-  tags = {
-    environment = "__tagenvironment__"
-    environment = "__tagapplication__"
-  }
 }
 
 resource "azurerm_network_interface" "__vmname__-VMNIC1" {
