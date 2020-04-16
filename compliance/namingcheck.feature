@@ -12,7 +12,7 @@ Feature: Azure resources follow naming convention
             | resource_name                   | name_key | regex                                                                    |
             | azurerm_resource_group          | name     | ^(PRD\|TST\|DEV)-RG-\\w\\w-.*                                            |
             | azurerm_virtual_network         | name     | ^(PRD\|TST\|DEV)-VN-\\w\\w-.*                                            |
-            | azurerm_subnet                  | name     | ^(PRD\|TST\|DEV)-(SN-\\w\\w-.*\|AzureBastionSubnet\|AzureFirewallSubnet) |
+            | azurerm_subnet                  | name     | ^((PRD\|TST\|DEV)-SN-\\w\\w-.*\|AzureBastionSubnet\|AzureFirewallSubnet) |
             | azurerm_public_ip               | name     | ^(PRD\|TST\|DEV)-PI-\\w\\w-.*                                            |
             | azurerm_bastion_host            | name     | ^(PRD\|TST\|DEV)-BN-\\w\\w-.*                                            |
             | azurerm_firewall                | name     | ^(PRD\|TST\|DEV)-FW-\\w\\w-.*                                            |
