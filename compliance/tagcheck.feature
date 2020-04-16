@@ -10,6 +10,6 @@ Feature: Azure resources have tags
         And its value must match the "<value>" regex
 
         Examples:
-            | tags        | value              |
-            | application | .+                 |
-            | environment | ^(prod\|uat\|dev)$ |
+            | tags        | value             |
+            | application | .+                |
+            | environment | ^(PRD\|TST\|DEV)$ |
