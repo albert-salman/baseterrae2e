@@ -134,7 +134,7 @@ resource "azurerm_network_interface" "__vmname__-VMNIC1" {
 }
 
 resource "azurerm_windows_virtual_machine" "__vmname__" {
-  name                = "__vmname__"
+  name                = "__tagenvironment__-__vmname__"
   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
   location            = azurerm_resource_group.__resourcegroupname__.location
   size                = "__vmsize__"
