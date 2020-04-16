@@ -14,7 +14,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "__resourcegroupname__" {
-  name     = "__tagenvironment____resourcegroupname__"
+  name     = "__tagenvironment__-__resourcegroupname__"
   location = "__resourcelocation__"
 
   tags = {
@@ -24,7 +24,7 @@ resource "azurerm_resource_group" "__resourcegroupname__" {
 }
 
 resource "azurerm_virtual_network" "__vnetname__" {
-  name                = "__tagenvironment____vnetname__"
+  name                = "__tagenvironment__-__vnetname__"
   address_space       = ["100.64.0.0/10"]
   location            = azurerm_resource_group.__resourcegroupname__.location
   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
@@ -43,7 +43,7 @@ resource "azurerm_subnet" "AzureBastionSubnet" {
 }
 
 resource "azurerm_public_ip" "__bastionpublicipname__" {
-  name                = "__tagenvironment____bastionpublicipname__"
+  name                = "__tagenvironment__-__bastionpublicipname__"
   location            = azurerm_resource_group.__resourcegroupname__.location
   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
   allocation_method   = "Static"
@@ -56,7 +56,7 @@ resource "azurerm_public_ip" "__bastionpublicipname__" {
 }
 
 resource "azurerm_bastion_host" "__bastionname__" {
-  name                = "__tagenvironment____bastionname__"
+  name                = "__tagenvironment__-__bastionname__"
   location            = azurerm_resource_group.__resourcegroupname__.location
   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
 
@@ -80,7 +80,7 @@ resource "azurerm_subnet" "AzureFirewallSubnet" {
 }
 
 resource "azurerm_public_ip" "__azfwpipname__" {
-  name                = "__tagenvironment____azfwpipname__"
+  name                = "__tagenvironment__-__azfwpipname__"
   location            = azurerm_resource_group.__resourcegroupname__.location
   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
   allocation_method   = "Static"
@@ -93,7 +93,7 @@ resource "azurerm_public_ip" "__azfwpipname__" {
 }
 
 resource "azurerm_firewall" "__azfwname__" {
-  name                = "__tagenvironment____azfwname__"
+  name                = "__tagenvironment__-__azfwname__"
   location            = azurerm_resource_group.__resourcegroupname__.location
   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
 
@@ -110,7 +110,7 @@ resource "azurerm_firewall" "__azfwname__" {
 }
 
 resource "azurerm_subnet" "__vmsubnetname__" {
-  name                 = "__tagenvironment____vmsubnetname__"
+  name                 = "__tagenvironment__-__vmsubnetname__"
   resource_group_name  = azurerm_resource_group.__resourcegroupname__.name
   virtual_network_name = azurerm_virtual_network.__vnetname__.name
   address_prefix       = "100.64.1.0/24"
@@ -163,7 +163,7 @@ resource "azurerm_windows_virtual_machine" "__vmname__" {
 }
 
 resource "azurerm_route_table" "__udrname__" {
-  name                          = "__tagenvironment____udrname__"
+  name                          = "__tagenvironment__-__udrname__"
   location                      = azurerm_resource_group.__resourcegroupname__.location
   resource_group_name           = azurerm_resource_group.__resourcegroupname__.name
   disable_bgp_route_propagation = false
