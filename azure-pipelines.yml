@@ -8,7 +8,7 @@ pool:
 variables:
   resourcelocation: 'West Europe'
   terraformstoragerg: 'RG-WE-TerraformStateStore'
-  terraformstorageaccount: 'fjiace2eterraformstate'
+  terraformstorageaccount: 'fjiace2eterraformstates'
   terraformcontainername: 'terraform'
   azfwipconfigname: 'IP-WE-AzFwIPConfig'
   azfwname: 'FW-WE-AzFw01'
