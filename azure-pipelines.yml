@@ -1,0 +1,121 @@
+trigger:
+- master
+
+pool:
+  name: Azure Pipelines
+  vmImage: 'ubuntu-18.04'
+
+variables:
+  resourcelocation: 'West Europe'
+  terraformstoragerg: 'RG-WE-TerraformStateStore'
+  terraformstorageaccount: 'terraformstorageforcipl'
+  terraformcontainername: 'terraform'
+  azfwipconfigname: 'IP-WE-AzFwIPConfig'
+  azfwname: 'FW-WE-AzFw01'
+  azfwpipname: 'PI-WE-AzFwPIP'
+  bastionname: 'BN-WE-Bastion'
+  bastionpublicipname: 'PI-WE-BastionPIP'
+  osdiskstoragetier: 'Standard_LRS'
+  resourcegroupname: 'RG-WE-Common-Network'
+  storagekey: 'runtime'
+  tagapplication: 'demoapp'
+  tagenvironment: 'DEV'
+  udrname: 'UR-WE-Default'
+  vmadminusername: 'adminuser'
+  vmadminuserpassword: '!QAZ2wsx'
+  vmname: 'VMWEHUB01'
+  vmsize: 'Standard_DS1_v2'
+  vmsubnetname: 'SN-WE-HUB-Internal'
+  vnetname: 'VN-WE-HubVNET'
+
+steps:
+- task: CopyFiles@2
+  displayName: 'Copy Terraform files to artifacts'
+  inputs:
+    Contents: '*.tf'
+    TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
+  
+- task: AzureCLI@1
+  displayName: 'Create storage acc for Terraform state and get its key'
+  inputs:
+    azureSubscription: AzureRM
+    scriptLocation: inlineScript
+    inlineScript: |
+     az group create --location "$(resourcelocation)" --name $(terraformstoragerg)
+     az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location "$(resourcelocation)" --sku Standard_LRS
+     az storage container create --name $(terraformcontainername)  --account-name $(terraformstorageaccount)
+     az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount) --query [0].value -o tsv > key.txt
+     value=`cat key.txt`
+     echo "##vso[task.setvariable variable=storagekey]$value"
+     echo "$storagekey"
+     
+
+- task: qetza.replacetokens.replacetokens-task.replacetokens@3
+  displayName: 'Replace tokens in *.tf'
+  inputs:
+    targetFiles: '*.tf'
+    escapeType: none
+    tokenPrefix: '__'
+    tokenSuffix: '__'
+
+- task: UsePythonVersion@0
+  displayName: 'Use Python 3.x'
+
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-installer-task.TerraformInstaller@0
+  displayName: 'Install Terraform 0.12.24'
+  inputs:
+    terraformVersion: 0.12.24
+
+- bash: |
+   pip install terraform-compliance
+   
+  displayName: 'Install terraform-compliance'
+
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV1@0
+  displayName: 'Terraform : init'
+  inputs:
+    backendServiceArm: AzureRM
+    backendAzureRmResourceGroupName: '$(terraformstoragerg)'
+    backendAzureRmStorageAccountName: '$(terraformstorageaccount) '
+    backendAzureRmContainerName: '$(terraformcontainername) '
+    backendAzureRmKey: terraform.tfstate
+
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV1@0
+  displayName: 'Terraform : plan'
+  inputs:
+    command: plan
+    commandOptions: '-out=tfplan.out'
+    environmentServiceNameAzureRM: AzureRM
+
+- bash: |
+   terraform-compliance -p tfplan.out -f ./compliance
+   
+  displayName: 'Run terraform-compliance'
+
+- script: |
+   echo $(Build.SourceVersionMessage) > CHANGES
+   terraform show tfplan.out  '(^.*[#~+-] .*|^[[:punct:]])' > PLANDETAILS
+  displayName: 'Save Git commit message and terraform plan to files'
+
+- task: CopyFiles@2
+  displayName: 'Copy CHANGES file to artifacts'
+  inputs:
+    Contents: CHANGES
+    TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
+
+- task: CopyFiles@2
+  displayName: 'Copy PLANDETAILS file to artifacts'
+  inputs:
+    Contents: PLANDETAILS
+    TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
+
+- task: CopyFiles@2
+  displayName: 'Copy BDD Gherkin feature files'
+  inputs:
+    Contents: 'compliance/**/*.feature'
+    TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
