@@ -3,29 +3,29 @@ trigger:
 
 pool:
   name: Azure Pipelines
-  
+
 variables:
   resourcelocation: 'West Europe'
   terraformstoragerg: 'RG-WE-TerraformStateStore'
   terraformstorageaccount: 'terraformstorageforcipl'
   terraformcontainername: 'terraform'
-  azfwipconfigname:'IP-WE-AzFwIPConfig'
-  azfwname:'FW-WE-AzFw01'
-  azfwpipname:'PI-WE-AzFwPIP'
-  bastionname:'BN-WE-Bastion'
-  bastionpublicipname:'PI-WE-BastionPIP'
-  osdiskstoragetier:'Standard_LRS'
-  resourcegroupname:'RG-WE-Common-Network'
-  storagekey:'runtime'
-  tagapplication:'demoapp'
-  tagenvironment:'DEV'
-  udrname:'UR-WE-Default'
-  vmadminusername:'adminuser'
-  vmadminuserpassword:'!QAZ2wsx'
-  vmname:'VMWEHUB01'
-  vmsize:'Standard_DS1_v2'
-  vmsubnetname:'SN-WE-HUB-Internal'
-  vnetname:'VN-WE-HubVNET'
+  azfwipconfigname: 'IP-WE-AzFwIPConfig'
+  azfwname: 'FW-WE-AzFw01'
+  azfwpipname: 'PI-WE-AzFwPIP'
+  bastionname: 'BN-WE-Bastion'
+  bastionpublicipname: 'PI-WE-BastionPIP'
+  osdiskstoragetier: 'Standard_LRS'
+  resourcegroupname: 'RG-WE-Common-Network'
+  storagekey: 'runtime'
+  tagapplication: 'demoapp'
+  tagenvironment: 'DEV'
+  udrname: 'UR-WE-Default'
+  vmadminusername: 'adminuser'
+  vmadminuserpassword: '!QAZ2wsx'
+  vmname: 'VMWEHUB01'
+  vmsize: 'Standard_DS1_v2'
+  vmsubnetname: 'SN-WE-HUB-Internal'
+  vnetname: 'VN-WE-HubVNET'
 
 steps:
 - task: CopyFiles@2
