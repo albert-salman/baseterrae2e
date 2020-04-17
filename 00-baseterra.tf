@@ -117,7 +117,7 @@ resource "azurerm_subnet" "__vmsubnetname__" {
 }
 
 resource "azurerm_network_interface" "__vmname__-VMNIC1" {
-  name                = "__vmname__-VMNIC1"
+  name                = "__tagenvironment__-__vmname__-VMNIC1"
   location            = azurerm_resource_group.__resourcegroupname__.location
   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
 
