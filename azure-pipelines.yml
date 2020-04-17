@@ -94,7 +94,7 @@ steps:
 
 - script: |
    echo $(Build.SourceVersionMessage) > CHANGES
-   terraform show tfplan.out  '(^.*[#~+-] .*|^[[:punct:]])' > PLANDETAILS
+   terraform show -no-color tfplan.out | grep '(^.*[#~+-] .*|^[[:punct:]])' > PLANDETAILS
   displayName: 'Save Git commit message and terraform plan to files'
 
 - task: CopyFiles@2
