@@ -3,6 +3,7 @@ trigger:
 
 pool:
   name: Azure Pipelines
+  vmImage: 'ubuntu-18.04'
 
 variables:
   resourcelocation: 'West Europe'
