@@ -92,7 +92,7 @@ steps:
    terraform-compliance -p tfplan.out -f ./compliance
    
   displayName: 'Run terraform-compliance'
-  
+
 - task: Bash@3
   inputs:
     targetType: 'inline'
@@ -102,7 +102,11 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'terraform show tfplan.out -json > tfplan.json'
+    script: |
+      terraform show tfplan.out -json > tfplan.json
+      wget https://github.com/open-policy-agent/opa/releases/download/v0.19.1/opa_linux_amd64
+      chmod + opa_linux_amd64
+      opa_linux_amd64 -v
   displayName: 'Evaluate OPA policy'
 
 - script: |
