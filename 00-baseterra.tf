@@ -140,6 +140,7 @@ resource "azurerm_windows_virtual_machine" "__vmname__" {
   size                = "__vmsize__"
   admin_username      = "__vmadminusername__"
   admin_password      = "__vmadminuserpassword__"
+  zone                = "__vmzone__"
   network_interface_ids = [
     azurerm_network_interface.__vmname__-VMNIC1.id,
   ]
