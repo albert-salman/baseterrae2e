@@ -105,8 +105,9 @@ steps:
     script: |
       terraform show tfplan.out -json > tfplan.json
       wget https://github.com/open-policy-agent/opa/releases/download/v0.19.1/opa_linux_amd64
-      chmod + ./opa_linux_amd64
-      ./opa_linux_amd64 -v
+      chmod +x ./opa_linux_amd64
+      mv ./opa_linux_amd64 ./opa
+      ./opa -v
   displayName: 'Evaluate OPA policy'
 
 - script: |
