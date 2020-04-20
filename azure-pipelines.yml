@@ -110,13 +110,13 @@ steps:
       ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.authz" > oparesult
       value=`cat oparesult`
       echo $value
-      if [ "$value" == "false" ] 
+      if [ "$value" == "true" ] 
       then
-        echo "The script ran ok"
-        exit 1
-      else
-      echo "The script failed" >&2
+        echo "The policy check ran ok"
         exit 0
+      else
+      echo "The policy check failed"
+        exit 1
       fi
   displayName: 'Evaluate Open Policy Agent policy'
 
