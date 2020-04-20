@@ -25,6 +25,7 @@ variables:
   vmadminuserpassword: '!QAZ2wsx'
   vmname: 'VMWEHUB01'
   vmsize: 'Standard_DS1_v2'
+  vmzone: '1'
   vmsubnetname: 'SN-WE-HUB-Internal'
   vnetname: 'VN-WE-HubVNET'
 
