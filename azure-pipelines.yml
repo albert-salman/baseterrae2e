@@ -92,7 +92,11 @@ steps:
    terraform-compliance -p tfplan.out -f ./compliance
    
   displayName: 'Run terraform-compliance'
-
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'terraform show tfplan.out -json > tfplan.json'
+    
 - script: |
    echo $(Build.SourceVersionMessage) > CHANGES
    terraform show tfplan.out -no-color > PLANDETAILS
