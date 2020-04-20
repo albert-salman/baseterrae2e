@@ -93,6 +93,23 @@ steps:
    
   displayName: 'Run terraform-compliance'
 
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: 'terraform show tfplan.out -json > tfplan.json'
+  displayName: 'Save terraform plan as JSON'
+
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      terraform show tfplan.out -json > tfplan.json
+      wget https://github.com/open-policy-agent/opa/releases/download/v0.19.1/opa_linux_amd64
+      chmod +x ./opa_linux_amd64
+      mv ./opa_linux_amd64 ./opa
+      ./opa -v
+  displayName: 'Evaluate OPA policy'
+
 - script: |
    echo $(Build.SourceVersionMessage) > CHANGES
    terraform show tfplan.out -no-color > PLANDETAILS
