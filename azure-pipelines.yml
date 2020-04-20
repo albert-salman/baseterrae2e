@@ -110,7 +110,7 @@ steps:
       ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.authz" > oparesult
       value=`cat oparesult`
       echo $value
-      if [ "$value" -eq "false" ] 
+      if [ "$value" == "false" ] 
       then
         echo "The script ran ok"
         exit 1
