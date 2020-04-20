@@ -103,12 +103,22 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      terraform show tfplan.out -json > tfplan.json
-      wget https://github.com/open-policy-agent/opa/releases/download/v0.19.1/opa_linux_amd64
-      chmod +x ./opa_linux_amd64
-      mv ./opa_linux_amd64 ./opa
-      ./opa -v
-  displayName: 'Evaluate OPA policy'
+      terraform show -json tfplan.out > evtfplan.json
+      wget https://github.com/open-policy-agent/opa/releases/download/v0.19.1/opa_linux_amd64 -O opa
+      chmod +x ./opa
+      ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.score"
+      ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.authz" > oparesult
+      value=`cat oparesult`
+      echo $value
+      if [ "$value" == "false" ] 
+      then
+        echo "The script ran ok"
+        exit 1
+      else
+      echo "The script failed" >&2
+        exit 0
+      fi
+  displayName: 'Evaluate Open Policy Agent policy'
 
 - script: |
    echo $(Build.SourceVersionMessage) > CHANGES
