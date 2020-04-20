@@ -8,7 +8,7 @@ pool:
 variables:
   resourcelocation: 'West Europe'
   terraformstoragerg: 'RG-WE-TerraformStateStore'
-  terraformstorageaccount: 'terraformstorageforcipl'
+  terraformstorageaccount: 'fjiace2eterraformstates'
   terraformcontainername: 'terraform'
   azfwipconfigname: 'IP-WE-AzFwIPConfig'
   azfwname: 'FW-WE-AzFw01'
@@ -94,7 +94,7 @@ steps:
 
 - script: |
    echo $(Build.SourceVersionMessage) > CHANGES
-   terraform show tfplan.out  '(^.*[#~+-] .*|^[[:punct:]])' > PLANDETAILS
+   terraform show tfplan.out -no-color > PLANDETAILS
   displayName: 'Save Git commit message and terraform plan to files'
 
 - task: CopyFiles@2
