@@ -106,8 +106,18 @@ steps:
       terraform show -json tfplan.out > evtfplan.json
       wget https://github.com/open-policy-agent/opa/releases/download/v0.19.1/opa_linux_amd64 -O opa
       chmod +x ./opa
-      ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.authz"
       ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.score"
+      ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.authz" > oparesult
+      value=`cat oparesult`
+      echo $value
+      if [ "$value" -eq "false" ] 
+      then
+        echo "The script ran ok"
+        exit 1
+      else
+      echo "The script failed" >&2
+        exit 0
+      fi
   displayName: 'Evaluate Open Policy Agent policy'
 
 - script: |
