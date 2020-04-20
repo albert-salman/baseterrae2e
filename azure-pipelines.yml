@@ -109,7 +109,7 @@ steps:
       ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.score"
       ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.authz" > oparesult
       value=`cat oparesult`
-      echo $value
+      echo Score is $value
       if [ "$value" == "true" ] 
       then
         echo "The policy check ran ok"
@@ -142,6 +142,13 @@ steps:
   inputs:
     Contents: 'compliance/**/*.feature'
     TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
+
+- task: CopyFiles@2
+  displayName: 'Copy OPA policy files'
+  inputs:
+    Contents: 'opapolicy/**/*.rego'
+    TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
+
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
