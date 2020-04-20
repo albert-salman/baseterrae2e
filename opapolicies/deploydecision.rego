@@ -7,7 +7,7 @@ import input as tfplan
 ########################
 
 # acceptable score for automated authorization
-blast_radius = 10
+blast_radius = 15
 
 # weights assigned for each operation on each resource-type
 weights = {
