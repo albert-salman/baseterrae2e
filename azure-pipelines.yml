@@ -110,12 +110,6 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'terraform show tfplan.out -json > tfplan.json'
-  displayName: 'Save terraform plan as JSON'
-
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
     script: |
       terraform show -json tfplan.out > evtfplan.json
       wget https://github.com/open-policy-agent/opa/releases/download/v0.19.1/opa_linux_amd64 -O opa
@@ -152,15 +146,15 @@ steps:
     TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
 
 - task: CopyFiles@2
-  displayName: 'Copy BDD Gherkin feature files'
+  displayName: 'Copy BDD Gherkin *.feature files'
   inputs:
     Contents: 'compliance/**/*.feature'
     TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
 
 - task: CopyFiles@2
-  displayName: 'Copy OPA policy files'
+  displayName: 'Copy OPA policy *.rego files'
   inputs:
-    Contents: 'opapolicy/**/*.rego'
+    Contents: 'opapolicies/**/*.rego'
     TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
 
 
