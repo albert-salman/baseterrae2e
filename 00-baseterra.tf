@@ -253,6 +253,7 @@ resource "azurerm_linux_virtual_machine" "nix__vmname__" {
   size                = "__vmsize__"
   admin_username      = "__vmadminusername__"
   admin_password      = "__vmadminuserpassword__"
+  disable_password_authentication = "false"
   network_interface_ids = [
     azurerm_network_interface.nix__vmname__-VMNIC1.id,
   ]
