@@ -118,10 +118,10 @@ steps:
       terraform show -json tfplan.out > evtfplan.json
       wget https://github.com/open-policy-agent/opa/releases/download/v0.19.1/opa_linux_amd64 -O opa
       chmod +x ./opa
+      echo Score is:
       ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.score"
       ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.authz" > oparesult
       value=`cat oparesult`
-      echo Score is $value
       if [ "$value" == "true" ] 
       then
         echo "The policy check ran ok"
