@@ -30,7 +30,7 @@ variables:
   vnetname: 'VN-WE-HubVNET'
   opariskscore: '15'
   opadeleteweight: '10'
-  opacreateweight: '1'
+  opacreateweight: '2'
   opamodifyweight: '1'
 
 steps:
