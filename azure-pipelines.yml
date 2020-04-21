@@ -110,12 +110,6 @@ steps:
 - task: Bash@3
   inputs:
     targetType: 'inline'
-    script: 'terraform show tfplan.out -json > tfplan.json'
-  displayName: 'Save terraform plan as JSON'
-
-- task: Bash@3
-  inputs:
-    targetType: 'inline'
     script: |
       terraform show -json tfplan.out > evtfplan.json
       wget https://github.com/open-policy-agent/opa/releases/download/v0.19.1/opa_linux_amd64 -O opa
