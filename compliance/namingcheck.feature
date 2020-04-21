@@ -17,5 +17,6 @@ Feature: Azure resources follow naming convention
             | azurerm_bastion_host            | name     | ^(PRD\|TST\|DEV)-BN-\\w\\w-.*                                            |
             | azurerm_firewall                | name     | ^(PRD\|TST\|DEV)-FW-\\w\\w-.*                                            |
             | azurerm_network_interface       | name     | .*-VMNIC\\d                                                              |
-            | azurerm_windows_virtual_machine | name     | ^(PRD\|TST\|DEV)-VM\\w\\w.*                                              |
+            | azurerm_windows_virtual_machine | name     | ^(PRD\|TST\|DEV)-winVM\\w\\w.*                                           |
+            | azurerm_linux_virtual_machine   | name     | ^(PRD\|TST\|DEV)-nixVM\\w\\w.*                                           |
             | azurerm_route_table             | name     | ^(PRD\|TST\|DEV)-UR-\\w\\w-.*                                            |
