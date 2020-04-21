@@ -7,28 +7,34 @@ import input as tfplan
 ########################
 
 # acceptable score for automated authorization
-blast_radius = 15
+blast_radius = __opariskscore__
+dweight = __opadeleteweight__
+cweight = __opacreateweight__
+mweight = __opamodifyweight__
 
 # weights assigned for each operation on each resource-type
 weights = {
-    "azurerm_resource_group": {"delete": 1000, "create": 10, "modify": 1},
-    "azurerm_virtual_network": {"delete": 10, "create": 1, "modify": 1},
-    "azurerm_subnet": {"delete": 10, "create": 1, "modify": 1},
-    "azurerm_public_ip": {"delete": 10, "create": 1, "modify": 1},
-    "azurerm_bastion_host": {"delete": 10, "create": 1, "modify": 1},
-    "azurerm_subnet": {"delete": 10, "create": 1, "modify": 1},
-    "azurerm_public_ip": {"delete": 10, "create": 1, "modify": 1},
-    "azurerm_firewall": {"delete": 10, "create": 1, "modify": 1},
-    "azurerm_route_table": {"delete": 10, "create": 1, "modify": 1},
-    "azurerm_windows_virtual_machine": {"delete": 10, "create": 1, "modify": 1},
-    "azurerm_subnet_route_table_association": {"delete": 10, "create": 1, "modify": 1},
-    "azurerm_firewall_application_rule_collection": {"delete": 10, "create": 1, "modify": 1},
-    "azurerm_network_interface": {"delete": 10, "create": 1, "modify": 1}
+    "azurerm_resource_group": {"delete": dweight, "create": cweight, "modify": mweight},
+    "azurerm_virtual_network": {"delete": dweight, "create": cweight, "modify": mweight},
+    "azurerm_subnet": {"delete": dweight, "create": cweight, "modify": mweight},
+    "azurerm_public_ip": {"delete": dweight, "create": cweight, "modify": mweight},
+    "azurerm_bastion_host": {"delete": dweight, "create": cweight, "modify": mweight},
+    "azurerm_subnet": {"delete": dweight, "create": cweight, "modify": mweight},
+    "azurerm_public_ip": {"delete": dweight, "create": cweight, "modify": mweight},
+    "azurerm_firewall": {"delete": dweight, "create": cweight, "modify": mweight},
+    "azurerm_route_table": {"delete": dweight, "create": cweight, "modify": mweight},
+    "azurerm_windows_virtual_machine": {"delete": dweight, "create": cweight, "modify": mweight},
+    "azurerm_subnet_route_table_association": {"delete": dweight, "create": cweight, "modify": mweight},
+    "azurerm_firewall_application_rule_collection": {"delete": dweight, "create": cweight, "modify": mweight},
+    "azurerm_network_interface": {"delete": dweight, "create": cweight, "modify": mweight}
 }
 
 # Consider exactly these resource types in calculations
-resource_types = {"azurerm_resource_group", "azurerm_virtual_network", "azurerm_firewall", "azurerm_windows_virtual_machine","azurerm_subnet_route_table_association"}
-
+resource_types = {"azurerm_resource_group", "azurerm_virtual_network", "azurerm_firewall","azurerm_network_interface",
+                  "azurerm_windows_virtual_machine","azurerm_subnet_route_table_association",
+                  "azurerm_subnet","azurerm_public_ip","azurerm_bastion_host","azurerm_route_table",
+                  "azurerm_firewall_application_rule_collection"
+                  }
 #########
 # Policy
 #########
