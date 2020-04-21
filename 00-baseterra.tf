@@ -14,7 +14,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "__resourcegroupname__" {
-  name     = "__tagenvironment__-__resourcegroupname__"
+  name     = "__tagenvironment__-__regionprefix__-__resourcegroupname__"
   location = "__resourcelocation__"
 
   tags = {
@@ -24,7 +24,7 @@ resource "azurerm_resource_group" "__resourcegroupname__" {
 }
 
 resource "azurerm_virtual_network" "__vnetname__" {
-  name                = "__tagenvironment__-__vnetname__"
+  name                = "__tagenvironment__-__regionprefix__-__vnetname__"
   address_space       = ["100.64.0.0/10"]
   location            = azurerm_resource_group.__resourcegroupname__.location
   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
@@ -50,14 +50,14 @@ resource "azurerm_subnet" "AzureFirewallSubnet" {
 }
 
 resource "azurerm_subnet" "__vmsubnetname__" {
-  name                 = "__tagenvironment__-__vmsubnetname__"
+  name                 = "__tagenvironment__-__regionprefix__-__vmsubnetname__"
   resource_group_name  = azurerm_resource_group.__resourcegroupname__.name
   virtual_network_name = azurerm_virtual_network.__vnetname__.name
   address_prefix       = "100.64.1.0/24"
 }
 
 # resource "azurerm_public_ip" "__bastionpublicipname__" {
-#   name                = "__tagenvironment__-__bastionpublicipname__"
+#   name                = "__tagenvironment__-__regionprefix__-__bastionpublicipname__"
 #   location            = azurerm_resource_group.__resourcegroupname__.location
 #   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
 #   allocation_method   = "Static"
@@ -70,7 +70,7 @@ resource "azurerm_subnet" "__vmsubnetname__" {
 # }
 
 # resource "azurerm_bastion_host" "__bastionname__" {
-#   name                = "__tagenvironment__-__bastionname__"
+#   name                = "__tagenvironment__-__regionprefix__-__bastionname__"
 #   location            = azurerm_resource_group.__resourcegroupname__.location
 #   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
 
@@ -87,7 +87,7 @@ resource "azurerm_subnet" "__vmsubnetname__" {
 # }
 
 # resource "azurerm_public_ip" "__azfwpipname__" {
-#   name                = "__tagenvironment__-__azfwpipname__"
+#   name                = "__tagenvironment__-__regionprefix__-__azfwpipname__"
 #   location            = azurerm_resource_group.__resourcegroupname__.location
 #   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
 #   allocation_method   = "Static"
@@ -100,7 +100,7 @@ resource "azurerm_subnet" "__vmsubnetname__" {
 # }
 
 # resource "azurerm_firewall" "__azfwname__" {
-#   name                = "__tagenvironment__-__azfwname__"
+#   name                = "__tagenvironment__-__regionprefix__-__azfwname__"
 #   location            = azurerm_resource_group.__resourcegroupname__.location
 #   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
 
@@ -117,7 +117,7 @@ resource "azurerm_subnet" "__vmsubnetname__" {
 # }
 
 # resource "azurerm_route_table" "__udrname__" {
-#   name                          = "__tagenvironment__-__udrname__"
+#   name                          = "__tagenvironment__-__regionprefix__-__udrname__"
 #   location                      = azurerm_resource_group.__resourcegroupname__.location
 #   resource_group_name           = azurerm_resource_group.__resourcegroupname__.name
 #   disable_bgp_route_propagation = false
@@ -169,7 +169,7 @@ resource "azurerm_subnet" "__vmsubnetname__" {
 # }
 
 # resource "azurerm_network_interface" "win__vmname__-VMNIC1" {
-#   name                = "__tagenvironment__-win__vmname__-VMNIC1"
+#   name                = "__tagenvironment__-__regionprefix__-win__vmname__-VMNIC1"
 #   location            = azurerm_resource_group.__resourcegroupname__.location
 #   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
 
@@ -186,7 +186,7 @@ resource "azurerm_subnet" "__vmsubnetname__" {
 # }
 
 # resource "azurerm_windows_virtual_machine" "win__vmname__" {
-#   name                = "__tagenvironment__-win__vmname__"
+#   name                = "__tagenvironment__-__regionprefix__-win__vmname__"
 #   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
 #   location            = azurerm_resource_group.__resourcegroupname__.location
 #   size                = "__vmsize__"
@@ -215,48 +215,62 @@ resource "azurerm_subnet" "__vmsubnetname__" {
 #   }
 # }
 
-# resource "azurerm_network_interface" "nix__vmname__-VMNIC1" {
-#   name                = "__tagenvironment__-nix__vmname__-VMNIC1"
-#   location            = azurerm_resource_group.__resourcegroupname__.location
-#   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
+resource "azurerm_public_ip" "__nixvmpipname__" {
+  name                = "__tagenvironment__-__regionprefix__-__nixvmpipname__"
+  location            = azurerm_resource_group.__resourcegroupname__.location
+  resource_group_name = azurerm_resource_group.__resourcegroupname__.name
+  allocation_method   = "Static"
+  sku                 = "Standard"
 
-#   ip_configuration {
-#     name                          = "internal"
-#     subnet_id                     = azurerm_subnet.__vmsubnetname__.id
-#     private_ip_address_allocation = "Dynamic"
-#   }
+  tags = {
+    environment = "__tagenvironment__"
+    application = "__tagapplication__"
+  }
+}
 
-#   tags = {
-#     environment = "__tagenvironment__"
-#     application = "__tagapplication__"
-#   }
-# }
+resource "azurerm_network_interface" "nix__vmname__-VMNIC1" {
+  name                = "__tagenvironment__-__regionprefix__-nix__vmname__-VMNIC1"
+  location            = azurerm_resource_group.__resourcegroupname__.location
+  resource_group_name = azurerm_resource_group.__resourcegroupname__.name
 
-# resource "azurerm_linux_virtual_machine" "nix__vmname__" {
-#   name                = "__tagenvironment__-nix__vmname__"
-#   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
-#   location            = azurerm_resource_group.__resourcegroupname__.location
-#   size                = "__vmsize__"
-#   admin_username      = "__vmadminusername__"
-#   admin_password      = "__vmadminuserpassword__"
-#   network_interface_ids = [
-#     azurerm_network_interface.nix__vmname__-VMNIC1.id,
-#   ]
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                     = azurerm_subnet.__vmsubnetname__.id
+    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.__nixvmpipname__.id
+  }
 
-#   # admin_ssh_key {
-#   #   username   = "adminuser"
-#   #   public_key = file("~/.ssh/id_rsa.pub")
-#   # }
+  tags = {
+    environment = "__tagenvironment__"
+    application = "__tagapplication__"
+  }
+}
 
-#   os_disk {
-#     caching              = "ReadWrite"
-#     storage_account_type = "__osdiskstoragetier__"
-#   }
+resource "azurerm_linux_virtual_machine" "nix__vmname__" {
+  name                = "__tagenvironment__-__regionprefix__-nix__vmname__"
+  resource_group_name = azurerm_resource_group.__resourcegroupname__.name
+  location            = azurerm_resource_group.__resourcegroupname__.location
+  size                = "__vmsize__"
+  admin_username      = "__vmadminusername__"
+  admin_password      = "__vmadminuserpassword__"
+  network_interface_ids = [
+    azurerm_network_interface.nix__vmname__-VMNIC1.id,
+  ]
 
-#   source_image_reference {
-#     publisher = "Canonical"
-#     offer     = "UbuntuServer"
-#     sku       = "18.04-LTS"
-#     version   = "latest"
-#   }
-# }
+  # admin_ssh_key {
+  #   username   = "adminuser"
+  #   public_key = file("~/.ssh/id_rsa.pub")
+  # }
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "__osdiskstoragetier__"
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "UbuntuServer"
+    sku       = "18.04-LTS"
+    version   = "latest"
+  }
+}
