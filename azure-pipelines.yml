@@ -1,5 +1,5 @@
 trigger:
-- master
+- manual
 
 pool:
   name: Azure Pipelines
@@ -28,6 +28,10 @@ variables:
   vmzone: '1'
   vmsubnetname: 'SN-WE-HUB-Internal'
   vnetname: 'VN-WE-HubVNET'
+  opariskscore: '15'
+  opadeleteweight: '10'
+  opacreateweight: '1'
+  opamodifyweight: '1'
 
 steps:
 - task: CopyFiles@2
@@ -52,9 +56,17 @@ steps:
      
 
 - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-  displayName: 'Replace tokens in *.tf'
+  displayName: 'Replace tokens in *.tf Terraform configs'
   inputs:
     targetFiles: '*.tf'
+    escapeType: none
+    tokenPrefix: '__'
+    tokenSuffix: '__'
+
+- task: qetza.replacetokens.replacetokens-task.replacetokens@3
+  displayName: 'Replace tokens in *.rego OPA policies'
+  inputs:
+    targetFiles: '**/*.rego'
     escapeType: none
     tokenPrefix: '__'
     tokenSuffix: '__'
@@ -109,14 +121,14 @@ steps:
       ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.score"
       ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.authz" > oparesult
       value=`cat oparesult`
-      echo $value
-      if [ "$value" == "false" ] 
+      echo Score is $value
+      if [ "$value" == "true" ] 
       then
-        echo "The script ran ok"
-        exit 1
-      else
-      echo "The script failed" >&2
+        echo "The policy check ran ok"
         exit 0
+      else
+      echo "The policy check failed"
+        exit 1
       fi
   displayName: 'Evaluate Open Policy Agent policy'
 
@@ -142,6 +154,13 @@ steps:
   inputs:
     Contents: 'compliance/**/*.feature'
     TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
+
+- task: CopyFiles@2
+  displayName: 'Copy OPA policy files'
+  inputs:
+    Contents: 'opapolicy/**/*.rego'
+    TargetFolder: '$(build.artifactstagingdirectory)/Terraform'
+
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
