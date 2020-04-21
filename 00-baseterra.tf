@@ -215,63 +215,63 @@ resource "azurerm_subnet" "__vmsubnetname__" {
 #   }
 # }
 
-resource "azurerm_public_ip" "__nixvmpipname__" {
-  name                = "__tagenvironment__-__regionprefix__-__nixvmpipname__"
-  location            = azurerm_resource_group.__resourcegroupname__.location
-  resource_group_name = azurerm_resource_group.__resourcegroupname__.name
-  allocation_method   = "Static"
-  sku                 = "Standard"
+# resource "azurerm_public_ip" "__nixvmpipname__" {
+#   name                = "__tagenvironment__-__regionprefix__-__nixvmpipname__"
+#   location            = azurerm_resource_group.__resourcegroupname__.location
+#   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
+#   allocation_method   = "Static"
+#   sku                 = "Standard"
 
-  tags = {
-    environment = "__tagenvironment__"
-    application = "__tagapplication__"
-  }
-}
+#   tags = {
+#     environment = "__tagenvironment__"
+#     application = "__tagapplication__"
+#   }
+# }
 
-resource "azurerm_network_interface" "nix__vmname__-VMNIC1" {
-  name                = "__tagenvironment__-__regionprefix__-nix__vmname__-VMNIC1"
-  location            = azurerm_resource_group.__resourcegroupname__.location
-  resource_group_name = azurerm_resource_group.__resourcegroupname__.name
+# resource "azurerm_network_interface" "nix__vmname__-VMNIC1" {
+#   name                = "__tagenvironment__-__regionprefix__-nix__vmname__-VMNIC1"
+#   location            = azurerm_resource_group.__resourcegroupname__.location
+#   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
 
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = azurerm_subnet.__vmsubnetname__.id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.__nixvmpipname__.id
-  }
+#   ip_configuration {
+#     name                          = "internal"
+#     subnet_id                     = azurerm_subnet.__vmsubnetname__.id
+#     private_ip_address_allocation = "Dynamic"
+#     public_ip_address_id          = azurerm_public_ip.__nixvmpipname__.id
+#   }
 
-  tags = {
-    environment = "__tagenvironment__"
-    application = "__tagapplication__"
-  }
-}
+#   tags = {
+#     environment = "__tagenvironment__"
+#     application = "__tagapplication__"
+#   }
+# }
 
-resource "azurerm_linux_virtual_machine" "nix__vmname__" {
-  name                = "__tagenvironment__-__regionprefix__-nix__vmname__"
-  resource_group_name = azurerm_resource_group.__resourcegroupname__.name
-  location            = azurerm_resource_group.__resourcegroupname__.location
-  size                = "__vmsize__"
-  admin_username      = "__vmadminusername__"
-  admin_password      = "__vmadminuserpassword__"
-  disable_password_authentication = "false"
-  network_interface_ids = [
-    azurerm_network_interface.nix__vmname__-VMNIC1.id,
-  ]
+# resource "azurerm_linux_virtual_machine" "nix__vmname__" {
+#   name                = "__tagenvironment__-__regionprefix__-nix__vmname__"
+#   resource_group_name = azurerm_resource_group.__resourcegroupname__.name
+#   location            = azurerm_resource_group.__resourcegroupname__.location
+#   size                = "__vmsize__"
+#   admin_username      = "__vmadminusername__"
+#   admin_password      = "__vmadminuserpassword__"
+#   disable_password_authentication = "false"
+#   network_interface_ids = [
+#     azurerm_network_interface.nix__vmname__-VMNIC1.id,
+#   ]
 
-  # admin_ssh_key {
-  #   username   = "adminuser"
-  #   public_key = file("~/.ssh/id_rsa.pub")
-  # }
+#   # admin_ssh_key {
+#   #   username   = "adminuser"
+#   #   public_key = file("~/.ssh/id_rsa.pub")
+#   # }
 
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "__osdiskstoragetier__"
-  }
+#   os_disk {
+#     caching              = "ReadWrite"
+#     storage_account_type = "__osdiskstoragetier__"
+#   }
 
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
-    version   = "latest"
-  }
-}
+#   source_image_reference {
+#     publisher = "Canonical"
+#     offer     = "UbuntuServer"
+#     sku       = "18.04-LTS"
+#     version   = "latest"
+#   }
+# }
