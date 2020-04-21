@@ -116,6 +116,7 @@ steps:
       chmod +x ./opa
       echo Score is:
       ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.score"
+      echo "whereas allowed risk score is $(opariskscore)"
       ./opa eval --format pretty --data ./opapolicies/deploydecision.rego --input ./evtfplan.json "data.terraform.analysis.authz" > oparesult
       value=`cat oparesult`
       if [ "$value" == "true" ] 
