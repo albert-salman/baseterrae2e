@@ -29,9 +29,9 @@ variables:
   vmsubnetname: 'SN-WE-HUB-Internal'
   vnetname: 'VN-WE-HubVNET'
   opariskscore: '15'
-  opadeleteweight: 'VN-WE-HubVNET'
-  opacreateweight: 'VN-WE-HubVNET'
-  opamodifyweight: 'VN-WE-HubVNET'
+  opadeleteweight: '10'
+  opacreateweight: '1'
+  opamodifyweight: '1'
 
 steps:
 - task: CopyFiles@2
